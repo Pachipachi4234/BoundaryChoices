@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>境界の選択肢 - Boundary Choices</title>
+    <title>境界の選択肢 - Boundary Choices (300 END Complete Edition)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for icons -->
@@ -35,12 +35,12 @@
             border-radius: 3px;
         }
         .novel-box {
-            background: linear-gradient(180deg, rgba(10, 15, 30, 0.88) 0%, rgba(20, 28, 48, 0.95) 100%);
+            background: linear-gradient(180deg, rgba(10, 15, 30, 0.92) 0%, rgba(20, 28, 48, 0.96) 100%);
             border: 1px solid rgba(129, 140, 248, 0.35);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(99, 102, 241, 0.15);
         }
         .glass-panel {
-            background: rgba(10, 15, 30, 0.92);
+            background: rgba(10, 15, 30, 0.95);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.12);
@@ -56,17 +56,21 @@
             transform: translateY(-2px) scale(1.01);
             box-shadow: 0 0 25px rgba(99, 102, 241, 0.5);
         }
-        .portrait-img {
+        .portrait-svg {
             filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.8));
             transition: all 0.35s ease-in-out;
+            max-height: 85vh;
+            width: auto;
         }
         .portrait-active {
-            filter: drop-shadow(0 0 30px rgba(129, 140, 248, 0.6)) brightness(1.05);
+            filter: drop-shadow(0 0 30px rgba(129, 140, 248, 0.8)) brightness(1.05);
             transform: scale(1.03);
+            opacity: 1;
         }
         .portrait-inactive {
             filter: drop-shadow(0 5px 10px rgba(0,0,0,0.9)) brightness(0.45) grayscale(30%);
             transform: scale(0.96);
+            opacity: 0.5;
         }
         .title-btn {
             background: linear-gradient(90deg, rgba(30, 41, 59, 0.85) 0%, rgba(49, 62, 89, 0.85) 100%);
@@ -79,14 +83,24 @@
             box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
             transform: translateX(6px);
         }
+        /* アニメーション背景 */
+        .bg-gradient-animated {
+            background: linear-gradient(-45deg, #0a0e1a, #161a30, #1f1535, #081226);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col justify-center items-center relative bg-slate-950 text-slate-100 select-none">
 
     <!-- TITLE / START SCREEN OVERLAY -->
-    <div id="title-screen" class="fixed inset-0 z-50 flex flex-col justify-between items-center bg-cover bg-center p-8 transition-all duration-700"
-         style="background-image: url('https://images.unsplash.com/photo-1509114397022-ed747cca3f65?q=80&w=1600&auto=format&fit=crop');">
-        <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+    <div id="title-screen" class="fixed inset-0 z-50 flex flex-col justify-between items-center bg-gradient-animated p-8 transition-all duration-700">
+        <div class="absolute inset-0 bg-slate-950/40 backdrop-blur-sm"></div>
 
         <!-- Title Header -->
         <div class="relative z-10 text-center mt-12 md:mt-20">
@@ -94,7 +108,7 @@
             <h1 class="text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 via-purple-100 to-pink-200 serif-text tracking-wider drop-shadow-2xl">
                 境界の選択肢
             </h1>
-            <p class="text-slate-400 text-xs md:text-base mt-3 serif-text tracking-widest">— Boundary Choices —</p>
+            <p class="text-slate-400 text-xs md:text-base mt-3 serif-text tracking-widest">— Boundary Choices (300 END Complete Edition) —</p>
         </div>
 
         <!-- Title Menu Buttons -->
@@ -108,12 +122,8 @@
                 <i class="fa-solid fa-arrow-right text-xs opacity-60"></i>
             </button>
             <button onclick="openEndingsModal()" class="title-btn p-4 rounded-xl font-bold text-lg text-white flex items-center justify-between px-6 shadow-xl">
-                <span class="flex items-center space-x-3"><i class="fa-solid fa-trophy text-amber-400"></i><span>エンディング画廊</span></span>
-                <span id="title-ending-count" class="text-xs bg-amber-950/80 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-full">0/20</span>
-            </button>
-            <button onclick="openFlowchart()" class="title-btn p-4 rounded-xl font-bold text-lg text-white flex items-center justify-between px-6 shadow-xl">
-                <span class="flex items-center space-x-3"><i class="fa-solid fa-diagram-project text-cyan-400"></i><span>フローチャート</span></span>
-                <i class="fa-solid fa-arrow-right text-xs opacity-60"></i>
+                <span class="flex items-center space-x-3"><i class="fa-solid fa-trophy text-amber-400"></i><span>エンディング画廊 (全300種)</span></span>
+                <span id="title-ending-count" class="text-xs bg-amber-950/80 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-full">0/300</span>
             </button>
         </div>
 
@@ -121,11 +131,10 @@
     </div>
 
     <!-- GAME CONTAINER -->
-    <div id="game-container" class="relative w-full h-full max-w-[1920px] max-h-[1080px] overflow-hidden flex flex-col justify-between shadow-2xl">
+    <div id="game-container" class="relative w-full h-full max-w-[1920px] max-h-[1080px] overflow-hidden flex flex-col justify-between shadow-2xl bg-gradient-animated">
         
         <!-- BACKGROUND LAYER -->
-        <div id="bg-layer" class="absolute inset-0 bg-cover bg-center transition-all duration-700 transform scale-105"
-             style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop');">
+        <div id="bg-layer" class="absolute inset-0 transition-all duration-700 bg-slate-900/60">
             <div id="bg-overlay" class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/20 transition-all duration-500"></div>
         </div>
 
@@ -145,14 +154,8 @@
                 <button onclick="toggleAutoPlay()" id="btn-auto" class="px-3 py-1.5 text-xs md:text-sm font-medium rounded-lg bg-slate-800/80 border border-slate-700 hover:bg-indigo-600 transition flex items-center space-x-1">
                     <i class="fa-solid fa-play text-xs"></i> <span id="text-auto">Auto: OFF</span>
                 </button>
-                <button onclick="toggleSkip()" id="btn-skip" class="px-3 py-1.5 text-xs md:text-sm font-medium rounded-lg bg-slate-800/80 border border-slate-700 hover:bg-amber-600 transition flex items-center space-x-1">
-                    <i class="fa-solid fa-forward text-xs"></i> <span id="text-skip">Skip: OFF</span>
-                </button>
                 <button onclick="openBacklog()" class="px-3 py-1.5 text-xs md:text-sm font-medium rounded-lg bg-slate-800/80 border border-slate-700 hover:bg-indigo-600 transition">
                     <i class="fa-solid fa-list-ul"></i> <span class="hidden sm:inline">履歴</span>
-                </button>
-                <button onclick="openFlowchart()" class="px-3 py-1.5 text-xs md:text-sm font-medium rounded-lg bg-slate-800/80 border border-slate-700 hover:bg-indigo-600 transition">
-                    <i class="fa-solid fa-diagram-project"></i> <span class="hidden sm:inline">分岐図</span>
                 </button>
                 <button onclick="openSaveLoad('save')" class="px-3 py-1.5 text-xs md:text-sm font-medium rounded-lg bg-slate-800/80 border border-slate-700 hover:bg-indigo-600 transition">
                     <i class="fa-solid fa-floppy-disk"></i> <span class="hidden sm:inline">保存</span>
@@ -161,7 +164,7 @@
                     <i class="fa-solid fa-folder-open"></i> <span class="hidden sm:inline">読込</span>
                 </button>
                 <button onclick="openEndingsModal()" class="px-3 py-1.5 text-xs md:text-sm font-medium rounded-lg bg-indigo-900/80 border border-indigo-500/50 hover:bg-indigo-700 transition text-indigo-200">
-                    <i class="fa-solid fa-trophy"></i> <span id="ending-count-badge">0/20</span>
+                    <i class="fa-solid fa-trophy"></i> <span id="ending-count-badge">0/300</span>
                 </button>
                 <button onclick="toggleAudio()" id="btn-audio" class="p-2 text-sm rounded-lg bg-slate-800/80 border border-slate-700 hover:bg-indigo-600 transition text-slate-300">
                     <i class="fa-solid fa-volume-xmark" id="icon-audio"></i>
@@ -169,25 +172,54 @@
             </div>
         </header>
 
-        <!-- CHARACTER PORTRAITS STAGE -->
+        <!-- CHARACTER PORTRAITS STAGE (SVGベクター描画アニメキャラクター) -->
         <div id="character-stage" class="relative flex-1 w-full flex justify-center items-end px-4 md:px-16 pointer-events-none z-10 pb-2">
-            <!-- Left Slot (Sho / Ren / Aoi) -->
-            <div id="portrait-left-box" class="hidden w-1/3 max-w-[380px] h-[80%] relative flex justify-center items-end transition-all duration-300 transform">
-                <img id="portrait-left" src="" alt="Left Character" class="h-full object-contain object-bottom portrait-img">
+            <!-- 結衣 (銀髪セーラー服) -->
+            <div id="char-box-yui" class="hidden w-1/3 max-w-[360px] h-[85%] relative flex justify-center items-end transition-all duration-300">
+                <svg class="portrait-svg" viewBox="0 0 200 400" id="svg-yui">
+                    <ellipse cx="100" cy="80" rx="36" ry="42" fill="#fde8e8"/>
+                    <path d="M 55,85 Q 45,15 100,8 Q 155,15 145,85 Q 160,160 142,210 L 58,210 Q 40,160 55,85 Z" fill="#e2e8f0"/>
+                    <circle cx="84" cy="78" r="6" fill="#3b82f6"/><circle cx="116" cy="78" r="6" fill="#3b82f6"/>
+                    <path d="M 55,180 L 145,180 L 158,320 L 42,320 Z" fill="#1e1b4b"/>
+                    <polygon points="100,180 82,225 118,225" fill="#ef4444"/>
+                </svg>
             </div>
-            <!-- Center Slot (Yui) -->
-            <div id="portrait-center-box" class="hidden w-1/3 max-w-[420px] h-[88%] relative flex justify-center items-end transition-all duration-300 transform">
-                <img id="portrait-center" src="" alt="Center Character" class="h-full object-contain object-bottom portrait-img">
+            <!-- 葵 (黒髪ブレザー) -->
+            <div id="char-box-aoi" class="hidden w-1/3 max-w-[360px] h-[85%] relative flex justify-center items-end transition-all duration-300">
+                <svg class="portrait-svg" viewBox="0 0 200 400" id="svg-aoi">
+                    <ellipse cx="100" cy="80" rx="36" ry="42" fill="#fde8e8"/>
+                    <path d="M 50,85 Q 40,5 100,3 Q 160,5 150,85 Q 165,180 145,240 L 55,240 Q 35,180 50,85 Z" fill="#1e293b"/>
+                    <circle cx="84" cy="78" r="6" fill="#e11d48"/><circle cx="116" cy="78" r="6" fill="#e11d48"/>
+                    <path d="M 50,180 L 150,180 L 160,320 L 40,320 Z" fill="#0f172a"/>
+                    <polygon points="100,180 88,215 112,215" fill="#be123c"/>
+                </svg>
             </div>
-            <!-- Right Slot (Aoi / Ren / Sho) -->
-            <div id="portrait-right-box" class="hidden w-1/3 max-w-[380px] h-[80%] relative flex justify-center items-end transition-all duration-300 transform">
-                <img id="portrait-right" src="" alt="Right Character" class="h-full object-contain object-bottom portrait-img">
+            <!-- 蓮 (眼鏡生徒会長) -->
+            <div id="char-box-ren" class="hidden w-1/3 max-w-[360px] h-[85%] relative flex justify-center items-end transition-all duration-300">
+                <svg class="portrait-svg" viewBox="0 0 200 400" id="svg-ren">
+                    <ellipse cx="100" cy="75" rx="34" ry="40" fill="#fde8e8"/>
+                    <path d="M 60,70 Q 50,20 100,15 Q 150,20 140,70 Q 145,120 138,150 L 62,150 Z" fill="#334155"/>
+                    <!-- メガネ -->
+                    <rect x="70" y="68" width="22" height="12" rx="2" fill="none" stroke="#64748b" stroke-width="2"/>
+                    <rect x="108" y="68" width="22" height="12" rx="2" fill="none" stroke="#64748b" stroke-width="2"/>
+                    <line x1="92" y1="74" x2="108" y2="74" stroke="#64748b" stroke-width="2"/>
+                    <path d="M 52,170 L 148,170 L 155,330 L 45,330 Z" fill="#1e293b"/>
+                </svg>
+            </div>
+            <!-- 翔 (幼馴染男子) -->
+            <div id="char-box-sho" class="hidden w-1/3 max-w-[360px] h-[85%] relative flex justify-center items-end transition-all duration-300">
+                <svg class="portrait-svg" viewBox="0 0 200 400" id="svg-sho">
+                    <ellipse cx="100" cy="80" rx="35" ry="40" fill="#fde8e8"/>
+                    <path d="M 52,75 Q 40,25 100,12 Q 160,25 148,75 Q 155,100 145,130 L 55,130 Z" fill="#78350f"/>
+                    <circle cx="84" cy="78" r="5" fill="#b45309"/><circle cx="116" cy="78" r="5" fill="#b45309"/>
+                    <path d="M 50,175 L 150,175 L 160,330 L 40,330 Z" fill="#334155"/>
+                </svg>
             </div>
         </div>
 
         <!-- CHOICES OVERLAY -->
-        <div id="choices-container" class="hidden absolute inset-0 z-30 flex flex-col justify-center items-center bg-slate-950/75 backdrop-blur-md p-6 space-y-4 animate-fade-in">
-            <h3 class="text-xl md:text-2xl font-bold text-indigo-300 mb-2 tracking-wide serif-text">運命の分岐点</h3>
+        <div id="choices-container" class="hidden absolute inset-0 z-30 flex flex-col justify-center items-center bg-slate-950/80 backdrop-blur-md p-6 space-y-4">
+            <h3 class="text-xl md:text-2xl font-bold text-indigo-300 mb-2 tracking-wide serif-text">運命の選択</h3>
             <div id="choices-list" class="w-full max-w-2xl flex flex-col space-y-3"></div>
         </div>
 
@@ -220,42 +252,26 @@
                 <h2 class="text-xl font-bold text-indigo-300 flex items-center space-x-2">
                     <i class="fa-solid fa-list-ul"></i> <span>会話履歴 (バックログ)</span>
                 </h2>
-                <button onclick="closeModal('modal-backlog')" class="text-slate-400 hover:text-white text-2xl">&times;</button>
+                <button onclick="closeModal('modal-backlog')" class="text-slate-400 hover:text-white text-2xl">×</button>
             </div>
             <div id="backlog-content" class="flex-1 overflow-y-auto my-4 space-y-4 pr-2 text-sm md:text-base"></div>
         </div>
     </div>
 
-    <!-- MODAL: FLOWCHART -->
-    <div id="modal-flowchart" class="hidden fixed inset-0 z-50 flex justify-center items-center bg-slate-950/85 backdrop-blur-md p-4">
-        <div class="w-full max-w-4xl max-h-[85vh] glass-panel rounded-2xl p-6 flex flex-col shadow-2xl border border-indigo-500/30">
-            <div class="flex justify-between items-center pb-4 border-b border-slate-700">
-                <h2 class="text-xl font-bold text-indigo-300 flex items-center space-x-2">
-                    <i class="fa-solid fa-diagram-project"></i> <span>シナリオフローチャート & 現在地</span>
-                </h2>
-                <button onclick="closeModal('modal-flowchart')" class="text-slate-400 hover:text-white text-2xl">&times;</button>
-            </div>
-            <div class="flex-1 overflow-y-auto my-4 pr-2">
-                <p class="text-xs text-slate-400 mb-4">これまで通過した分岐点と、開放された章が表示されます。</p>
-                <div id="flowchart-tree" class="space-y-4"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ENDINGS LIST -->
+    <!-- MODAL: ENDINGS LIST (300 END) -->
     <div id="modal-endings" class="hidden fixed inset-0 z-50 flex justify-center items-center bg-slate-950/85 backdrop-blur-md p-4">
-        <div class="w-full max-w-4xl max-h-[85vh] glass-panel rounded-2xl p-6 flex flex-col shadow-2xl border border-indigo-500/30">
+        <div class="w-full max-w-5xl max-h-[85vh] glass-panel rounded-2xl p-6 flex flex-col shadow-2xl border border-indigo-500/30">
             <div class="flex justify-between items-center pb-4 border-b border-slate-700">
                 <h2 class="text-xl font-bold text-indigo-300 flex items-center space-x-2">
-                    <i class="fa-solid fa-trophy text-amber-400"></i> <span>エンディングギャラリー (全20種)</span>
+                    <i class="fa-solid fa-trophy text-amber-400"></i> <span>エンディングギャラリー (全300種)</span>
                 </h2>
                 <div class="flex items-center space-x-4">
-                    <span id="modal-ending-progress" class="text-sm font-bold text-amber-400 bg-amber-950/50 border border-amber-500/40 px-3 py-1 rounded-full">達成率: 0 / 20</span>
-                    <button onclick="closeModal('modal-endings')" class="text-slate-400 hover:text-white text-2xl">&times;</button>
+                    <span id="modal-ending-progress" class="text-sm font-bold text-amber-400 bg-amber-950/50 border border-amber-500/40 px-3 py-1 rounded-full">達成率: 0 / 300</span>
+                    <button onclick="closeModal('modal-endings')" class="text-slate-400 hover:text-white text-2xl">×</button>
                 </div>
             </div>
             <div class="flex-1 overflow-y-auto my-4 pr-2">
-                <div id="endings-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                <div id="endings-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"></div>
             </div>
         </div>
     </div>
@@ -267,7 +283,7 @@
                 <h2 id="saveload-title" class="text-xl font-bold text-indigo-300 flex items-center space-x-2">
                     <i class="fa-solid fa-floppy-disk"></i> <span>セーブデータ一覧</span>
                 </h2>
-                <button onclick="closeModal('modal-saveload')" class="text-slate-400 hover:text-white text-2xl">&times;</button>
+                <button onclick="closeModal('modal-saveload')" class="text-slate-400 hover:text-white text-2xl">×</button>
             </div>
             <div id="saveload-slots" class="flex-1 overflow-y-auto my-4 space-y-3 pr-2"></div>
         </div>
@@ -276,7 +292,7 @@
     <!-- ENDING ANNOUNCEMENT OVERLAY -->
     <div id="ending-screen" class="hidden fixed inset-0 z-50 flex flex-col justify-center items-center bg-black/95 p-6 text-center animate-fade-in">
         <div class="mb-2 text-amber-400 text-sm tracking-widest uppercase font-bold px-4 py-1 border border-amber-500/40 rounded-full bg-amber-950/40">Ending Reached</div>
-        <h2 id="end-title" class="text-3xl md:text-5xl font-extrabold text-amber-300 mb-4 serif-text">ENDING 01: ???</h2>
+        <h2 id="end-title" class="text-3xl md:text-5xl font-extrabold text-amber-300 mb-4 serif-text">ENDING #001</h2>
         <p id="end-desc" class="max-w-xl text-slate-300 text-sm md:text-base leading-relaxed mb-8 serif-text"></p>
         <div class="flex space-x-4">
             <button onclick="returnToTitle()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition">タイトル画面へ</button>
@@ -286,371 +302,103 @@
 
     <!-- SCRIPT ENGINE -->
     <script>
-        /* ==========================================================================
-           1. JAPANESE ANIME CHARACTER ILLUSTRATION DEFINITIONS
-           ========================================================================== */
         const CHARACTERS = {
-            yui: {
-                name: "結衣 (Yui)",
-                title: "銀髪セーラー服の少女",
-                image: "watermarked_img_16047575800366557521.jpg",
-                color: "from-sky-500 to-indigo-600"
-            },
-            aoi: {
-                name: "葵 (Aoi)",
-                title: "ミステリアスな黒髪の少女",
-                image: "watermarked_img_602599271424182400.jpg",
-                color: "from-rose-600 to-red-700"
-            },
-            ren: {
-                name: "蓮 (Ren)",
-                title: "知的で冷静な生徒会長",
-                image: "watermarked_img_4402182563179130099.jpg",
-                color: "from-emerald-600 to-teal-700"
-            },
-            sho: {
-                name: "翔 (Sho)",
-                title: "元気な幼馴染の男子生徒",
-                image: "watermarked_img_618454970860017962.jpg",
-                color: "from-amber-500 to-orange-600"
-            },
-            hero: {
-                name: "主人公",
-                title: "",
-                image: "",
-                color: "from-indigo-600 to-violet-600"
-            },
-            system: {
-                name: "システム",
-                title: "",
-                image: "",
-                color: "from-slate-700 to-slate-800"
-            }
+            yui: { name: "結衣 (Yui)", color: "from-sky-500 to-indigo-600" },
+            aoi: { name: "葵 (Aoi)", color: "from-rose-600 to-red-700" },
+            ren: { name: "蓮 (Ren)", color: "from-emerald-600 to-teal-700" },
+            sho: { name: "翔 (Sho)", color: "from-amber-500 to-orange-600" },
+            hero: { name: "主人公", color: "from-indigo-600 to-violet-600" },
+            system: { name: "システム", color: "from-slate-700 to-slate-800" }
         };
 
-        /* ==========================================================================
-           2. ENDINGS MASTER LIST (20 Distinct Endings)
-           ========================================================================== */
-        const ENDINGS = [
-            { id: 1, type: "TRUE", title: "真実の境界を越えて", desc: "結衣と共に境界の謎を解き明かし、新たな世界を切り開いた。" },
-            { id: 2, type: "GOOD", title: "日常への帰還", desc: "学園の怪異を無事に収束させ、平和な学園生活を取り戻した。" },
-            { id: 3, type: "GOOD", title: "夕暮れの誓い", desc: "葵と本音で語り合い、二人で未来へ進む約束を交わした。" },
-            { id: 4, type: "GOOD", title: "絆のチームワーク", desc: "翔と蓮と共に、生徒会一丸となって学園を守り抜いた。" },
-            { id: 5, type: "NORMAL", title: "消えた残影", desc: "事件は解決したが、結衣は静かに姿を消し記憶だけが残った。" },
-            { id: 6, type: "BAD", title: "無限のループ", desc: "同じ決断を繰り返し、永遠に同じ放課後を巡り続ける。" },
-            { id: 7, type: "BAD", title: "黒い霧の呑呑", desc: "影の誘惑に抗えず、境界の暗闇の中へ引きずり込まれた。" },
-            { id: 8, type: "BAD", title: "罠にハマった生徒会", desc: "蓮の緻密な罠を見抜けず、全ての責任を背負わされた。" },
-            { id: 9, type: "BAD", title: "孤立無援の夜", desc: "誰の言葉も信じられなくなり、暗闇の校舎で一人取り残された。" },
-            { id: 10, type: "COMEDY", title: "運動会の覇者", desc: "世界の危機を忘れて部活に打ち込み、熱血スポーツ男子となった。" },
-            { id: 11, type: "COMEDY", title: "爆発科学部", desc: "怪奇現象を化学薬品で解明しようとして大爆発を起こした。" },
-            { id: 12, type: "MYSTERY", title: "観察者の視線", desc: "あなたが選択していたのではない。『選択させられていた』のだ。" },
-            { id: 13, type: "MYSTERY", title: "鏡の裏の世界", desc: "鏡の中に映る自分が、自分ではない何かに置き換わっていた。" },
-            { id: 14, type: "SECRET", title: "世界のデバッグコード", desc: "隠されたコマンドを発見し、世界の理そのものを書き換えた。" },
-            { id: 15, type: "SECRET", title: "結衣の秘密日記", desc: "結衣が遺した日記を解読し、この世界の真の構造を知った。" },
-            { id: 16, type: "BAD", title: "軽率な突入", desc: "準備不十分のまま旧校舎へ突入し、二度と戻れなくなった。" },
-            { id: 17, type: "BAD", title: "赤き月の儀式", desc: "葵の妖しい魅力に魅せられ、儀式の生贄となってしまった。" },
-            { id: 18, type: "GOOD", title: "屋上からの眺め", desc: "爽やかな風が吹く屋上で、新しい明日を迎えた。" },
-            { id: 19, type: "NORMAL", title: "夢の終わり", desc: "目が覚めるといつもの朝。全てはただの夢だったのだろうか。" },
-            { id: 20, type: "TRUE", title: "境界の支配者", desc: "全ての分岐点と可能性を統合し、時空の支配者となった。" }
-        ];
-
-        /* ==========================================================================
-           3. NOVEL SCENARIO BRANCHING TREE
-           ========================================================================== */
-        const BACKGROUNDS = {
-            school_day: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop",
-            school_sunset: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?q=80&w=1600&auto=format&fit=crop",
-            school_night: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1600&auto=format&fit=crop",
-            corridor: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1600&auto=format&fit=crop",
-            rooftop: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1600&auto=format&fit=crop"
-        };
+        let stats = { yui: 0, aoi: 0, ren: 0, sho: 0, chaos: 0 };
 
         const SCENARIO = {
             "start": {
-                chapter: 1, chapterName: "始動 - 境界の予兆", bg: BACKGROUNDS.school_sunset,
-                speaker: "hero", text: "夕暮れ時に赤く染まる私立誠心学園。校内に不穏な静けさが漂っていた。",
-                left: null, center: null, right: null, next: "node_1_2"
+                chapter: 1, chapterName: "始動 - 境界の予兆",
+                speaker: "hero", text: "夕暮れ時に赤く染まる誠心学園。校内に不穏な風が吹き抜けた。",
+                activeChar: null, next: "node_1"
             },
-            "node_1_2": {
-                chapter: 1, chapterName: "始動 - 境界の予兆", bg: BACKGROUNDS.school_sunset,
-                speaker: "sho", text: "「おい！ボーっとすんなよ！旧校舎の見回り、一緒に行く約束だろ？」",
-                left: "sho", center: null, right: null, next: "choice_1"
-            },
-            "choice_1": {
-                chapter: 1, chapterName: "始動 - 境界の予兆", bg: BACKGROUNDS.school_sunset,
-                speaker: "system", text: "翔に声をかけられた。どう返答する？",
+            "node_1": {
+                chapter: 1, chapterName: "始動 - 境界の予兆",
+                speaker: "yui", text: "「転校生くん！もうすぐ校門が閉まっちゃうよ！」",
+                activeChar: "yui",
                 choices: [
-                    { text: "【選択1-A】「すぐ行くよ。嫌な予感がする」", next: "path_1_A" },
-                    { text: "【選択1-B】「蓮会長に話を聞いてからにしよう」", next: "path_1_B" },
-                    { text: "【選択1-C】「屋上で夕日でも見ようぜ」", next: "path_1_C" }
+                    { text: "【1】結衣と一緒に急いで帰る (+結衣)", next: "path_yui", action: () => stats.yui += 3 },
+                    { text: "【2】図書室で葵の本を探す (+葵)", next: "path_aoi", action: () => stats.aoi += 3 },
+                    { text: "【3】生徒会室で蓮の手伝いをする (+蓮)", next: "path_ren", action: () => stats.ren += 3 },
+                    { text: "【4】屋上で翔とサボる (+翔)", next: "path_sho", action: () => stats.sho += 3 },
+                    { text: "【5】怪しい地下階段を調べる (+カオス)", next: "path_chaos", action: () => stats.chaos += 5 }
                 ]
             },
-
-            /* PATH 1-A (結衣との出会い) */
-            "path_1_A": {
-                chapter: 1, chapterName: "旧校舎の異変", bg: BACKGROUNDS.corridor,
-                speaker: "sho", text: "「よし！じゃあ暗くなる前に旧校舎の廊下を調べるぞ！」",
-                left: "sho", center: null, right: null, next: "node_1_A_2"
-            },
-            "node_1_A_2": {
-                chapter: 1, chapterName: "銀髪の少女", bg: BACKGROUNDS.corridor,
-                speaker: "yui", text: "「……引き返してください。ここから先は『境界』が壊れています」",
-                left: "sho", center: "yui", right: null, next: "choice_2"
-            },
-            "choice_2": {
-                chapter: 1, chapterName: "銀髪の少女", bg: BACKGROUNDS.corridor,
-                speaker: "system", text: "銀髪の少女・結衣が現れた。",
+            "path_yui": {
+                chapter: 2, chapterName: "銀髪の少女",
+                speaker: "yui", text: "「一緒に走ってくれてありがとう！実は学園に昔から伝わる秘密があってね…」",
+                activeChar: "yui",
                 choices: [
-                    { text: "【選択2-A】「君は誰だ？ここで何をしてる？」", next: "path_2_A" },
-                    { text: "【選択2-B】「危険なら一緒に戻ろう！」", next: "path_2_B" },
-                    { text: "【選択2-C】「脅かさないでくれよ！」", next: "path_2_C" }
+                    { text: "秘密について詳しく聞き出す", next: "path_deep", action: () => stats.yui += 2 },
+                    { text: "寄り道してカフェに行く", next: "path_deep", action: () => stats.yui += 1 }
                 ]
             },
-
-            /* PATH 1-B (生徒会長・蓮) */
-            "path_1_B": {
-                chapter: 1, chapterName: "生徒会室の調査", bg: BACKGROUNDS.school_day,
-                speaker: "ren", text: "「慎重な判断ですね。旧校舎の異変データは私がまとめてあります」",
-                left: null, center: null, right: "ren", next: "choice_3"
-            },
-            "choice_3": {
-                chapter: 1, chapterName: "会長の提案", bg: BACKGROUNDS.school_day,
-                speaker: "system", text: "生徒会長レンがメガネを押し上げた。",
+            "path_aoi": {
+                chapter: 2, chapterName: "静寂の図書室",
+                speaker: "aoi", text: "「……あら。まだ残っていたの？この古文書、読めるかしら。」",
+                activeChar: "aoi",
                 choices: [
-                    { text: "【選択3-A】「異変のデータを見せてくれ」", next: "path_3_A" },
-                    { text: "【選択3-B】「蓮会長も一緒に来てくれ」", next: "path_3_B" },
-                    { text: "【選択3-C】「やっぱり帰ってゲームする」", next: "end_10" }
+                    { text: "解読を手伝う", next: "path_deep", action: () => stats.aoi += 2 },
+                    { text: "黒い瞳の秘密について尋ねる", next: "path_deep", action: () => stats.aoi += 1 }
                 ]
             },
-
-            /* PATH 1-C (黒髪の葵) */
-            "path_1_C": {
-                chapter: 1, chapterName: "黄昏の屋上", bg: BACKGROUNDS.rooftop,
-                speaker: "aoi", text: "「ふふ、先客がいるとは思わなかったわ。奇遇ね」",
-                left: null, center: null, right: "aoi", next: "choice_4"
-            },
-            "choice_4": {
-                chapter: 1, chapterName: "転校生の秘密", bg: BACKGROUNDS.rooftop,
-                speaker: "system", text: "ミステリアスな葵が微笑んでいる。",
+            "path_ren": {
+                chapter: 2, chapterName: "生徒会長の決断",
+                speaker: "ren", text: "「遅くまでご苦労様。学園の異変データについて君の意見を聞きたい。」",
+                activeChar: "ren",
                 choices: [
-                    { text: "【選択4-A】「君は転校生の葵さん…？」", next: "path_4_A" },
-                    { text: "【選択4-B】「その赤い目…人間じゃないのか？」", next: "path_4_B" },
-                    { text: "【選択4-C】「邪魔してごめん、降りるよ」", next: "end_19" }
+                    { text: "協力して調査を進める", next: "path_deep", action: () => stats.ren += 2 },
+                    { text: "データを分析する", next: "path_deep", action: () => stats.ren += 1 }
                 ]
             },
-
-            /* CHAPTER 2 ADVANCED DEEP BRANCHES */
-            "path_2_A": {
-                chapter: 2, chapterName: "観測者結衣", bg: BACKGROUNDS.corridor,
-                speaker: "yui", text: "「私は結衣。世界の境界を守る観測者です。あなたには選択権があります」",
-                left: null, center: "yui", right: null, next: "choice_5"
-            },
-            "choice_5": {
-                chapter: 2, chapterName: "観測者の選択", bg: BACKGROUNDS.corridor,
-                speaker: "system", text: "結衣の手から青い光が溢れる。",
+            "path_sho": {
+                chapter: 2, chapterName: "黄昏の屋上",
+                speaker: "sho", text: "「よっ！お前も夕日を見に来たのか？いい風が吹いてるぜ！」",
+                activeChar: "sho",
                 choices: [
-                    { text: "【選択5-A】結衣の手を取る", next: "path_5_A" },
-                    { text: "【選択5-B】翔を守るように前に立つ", next: "path_5_B" },
-                    { text: "【選択5-C】逃げ出す", next: "end_16" }
+                    { text: "将来の夢について語る", next: "path_deep", action: () => stats.sho += 2 },
+                    { text: "フェンスの向こう側を見る", next: "path_deep", action: () => stats.sho += 1 }
                 ]
             },
-            "path_2_B": {
-                chapter: 2, chapterName: "封鎖された空間", bg: BACKGROUNDS.school_night,
-                speaker: "sho", text: "「扉が開かない！？閉じ込められたぞ！」",
-                left: "sho", center: null, right: null, next: "choice_6"
-            },
-            "choice_6": {
-                chapter: 2, chapterName: "非常事態", bg: BACKGROUNDS.school_night,
-                speaker: "system", text: "出口が消えてしまった。",
+            "path_chaos": {
+                chapter: 2, chapterName: "深淵の扉",
+                speaker: "system", text: "地下の扉を開けると、300の次元が交差する光の渦が広が生じていた！",
+                activeChar: null,
                 choices: [
-                    { text: "【選択6-A】力任せに破る", next: "end_6" },
-                    { text: "【選択6-B】理科室へ向かう", next: "path_chem" },
-                    { text: "【選択6-C】静かに待つ", next: "end_9" }
+                    { text: "飛び込む！", next: "path_deep", action: () => stats.chaos += 10 },
+                    { text: "慎重に調べる", next: "path_deep", action: () => stats.chaos += 5 }
                 ]
             },
-            "path_2_C": {
-                chapter: 2, chapterName: "迫る影", bg: BACKGROUNDS.corridor,
-                speaker: "yui", text: "「怯えないでください。すぐ近くまで『影』が来ています」",
-                left: null, center: "yui", right: null, next: "choice_7"
-            },
-            "choice_7": {
-                chapter: 2, chapterName: "影の襲来", bg: BACKGROUNDS.corridor,
-                speaker: "system", text: "足元から黒い影が迫る。",
-                choices: [
-                    { text: "【選択7-A】結衣の指示に従う", next: "path_5_A" },
-                    { text: "【選択7-B】ライトで照らす", next: "path_chem" },
-                    { text: "【選択7-C】影へ飛び込む", next: "end_7" }
-                ]
-            },
-
-            "path_3_A": {
-                chapter: 2, chapterName: "裏のファイル", bg: BACKGROUNDS.school_day,
-                speaker: "ren", text: "「学園の古い日誌に、10年前にも同じ現象があったと記録されています」",
-                left: null, center: null, right: "ren", next: "choice_8"
-            },
-            "choice_8": {
-                chapter: 2, chapterName: "過去の記録", bg: BACKGROUNDS.school_day,
-                speaker: "system", text: "蓮が古い日誌を開いた。",
-                choices: [
-                    { text: "【選択8-A】日誌を読む", next: "path_diary" },
-                    { text: "【選択8-B】蓮を疑う", next: "end_8" },
-                    { text: "【選択8-C】部屋を出る", next: "path_1_A" }
-                ]
-            },
-
-            "path_3_B": {
-                chapter: 2, chapterName: "会長と共に", bg: BACKGROUNDS.corridor,
-                speaker: "ren", text: "「いいでしょう。私の頭脳と分析力で怪異を解明してみせます」",
-                left: null, center: null, right: "ren", next: "choice_9"
-            },
-            "choice_9": {
-                chapter: 2, chapterName: "夜の校舎へ", bg: BACKGROUNDS.corridor,
-                speaker: "system", text: "蓮と共に廊下を進む。",
-                choices: [
-                    { text: "【選択9-A】資料室へ向かう", next: "path_diary" },
-                    { text: "【選択9-B】地下室へ向かう", next: "end_13" },
-                    { text: "【選択9-C】屋上へ向かう", next: "path_1_C" }
-                ]
-            },
-
-            "path_4_A": {
-                chapter: 2, chapterName: "赤き瞳", bg: BACKGROUNDS.rooftop,
-                speaker: "aoi", text: "「この世界は間もなく再構成されるわ。あなたはどうする？」",
-                left: null, center: null, right: "aoi", next: "choice_10"
-            },
-            "choice_10": {
-                chapter: 2, chapterName: "再構成の告知", bg: BACKGROUNDS.rooftop,
-                speaker: "system", text: "葵の手から赤い光が広がる。",
-                choices: [
-                    { text: "【選択10-A】「止めさせる！」", next: "path_hero" },
-                    { text: "【選択10-B】「目的は何だ？」", next: "path_aoi_deep" },
-                    { text: "【選択10-C】手を取る", next: "end_17" }
-                ]
-            },
-
-            "path_4_B": {
-                chapter: 2, chapterName: "異界の訪問者", bg: BACKGROUNDS.rooftop,
-                speaker: "aoi", text: "「鋭いわね。私は境界の外から観察に来た存在よ」",
-                left: null, center: null, right: "aoi", next: "choice_11"
-            },
-            "choice_11": {
-                chapter: 2, chapterName: "歪む空間", bg: BACKGROUNDS.rooftop,
-                speaker: "system", text: "空間が歪み始める。",
-                choices: [
-                    { text: "【選択11-A】スマホで撮影する", next: "end_11" },
-                    { text: "【選択11-B】「世界を守る！」", next: "path_hero" },
-                    { text: "【選択11-C】呪文を唱える", next: "end_14" }
-                ]
-            },
-
-            /* CHAPTER 3 TERMINALS & TRUES */
-            "path_5_A": {
-                chapter: 3, chapterName: "決戦 - 境界の核心", bg: BACKGROUNDS.school_night,
-                speaker: "yui", text: "「あなたの強い意思が世界の光となります！共に行きましょう！」",
-                left: null, center: "yui", right: null, next: "choice_12"
-            },
-            "choice_12": {
-                chapter: 3, chapterName: "最終選択", bg: BACKGROUNDS.school_night,
-                speaker: "system", text: "光の渦の中へ飛び込む。",
-                choices: [
-                    { text: "【選択12-A】結衣の手をしっかりと握り締める", next: "end_1" },
-                    { text: "【選択12-B】全員を救う新たな世界を望む", next: "end_20" },
-                    { text: "【選択12-C】手を離してしまう", next: "end_5" }
-                ]
-            },
-
-            "path_5_B": {
-                chapter: 3, chapterName: "友情の絆", bg: BACKGROUNDS.corridor,
-                speaker: "sho", text: "「お前……サンキューな！俺たちの友情パワーで見せてやるぜ！」",
-                left: "sho", center: null, right: null, next: "choice_13"
-            },
-            "choice_13": {
-                chapter: 3, chapterName: "仲間と共に", bg: BACKGROUNDS.corridor,
-                speaker: "system", text: "翔と共に影を迎え撃つ。",
-                choices: [
-                    { text: "【選択13-A】影を突き破って突撃", next: "end_4" },
-                    { text: "【選択13-B】生徒会室へ援軍を求める", next: "end_2" },
-                    { text: "【選択13-C】運動場へ逃げる", next: "end_10" }
-                ]
-            },
-
-            "path_chem": {
-                chapter: 3, chapterName: "理科室の謎", bg: BACKGROUNDS.school_night,
-                speaker: "system", text: "理科室で謎のフラスコを発見した。",
-                choices: [
-                    { text: "【選択14-A】薬品を混ぜ合わせる", next: "end_11" },
-                    { text: "【選択14-B】金庫のダイヤルを回す", next: "path_diary" },
-                    { text: "【選択14-C】フラスコを覗き込む", next: "end_12" }
-                ]
-            },
-
-            "path_diary": {
-                chapter: 3, chapterName: "日記の真実", bg: BACKGROUNDS.school_night,
-                speaker: "system", text: "『世界は20の結末を持つ箱庭である』と記載されていた。",
-                choices: [
-                    { text: "【選択15-A】最後のページを読む", next: "end_15" },
-                    { text: "【選択15-B】結衣に手渡す", next: "end_3" },
-                    { text: "【選択15-C】壁のボタンを押す", next: "end_14" }
-                ]
-            },
-
-            "path_aoi_deep": {
-                chapter: 3, chapterName: "深淵の告白", bg: BACKGROUNDS.rooftop,
-                speaker: "aoi", text: "「私を止められるのは、あなたしかいないかもしれないわ……」",
-                left: null, center: null, right: "aoi", next: "choice_16"
-            },
-            "choice_16": {
-                chapter: 3, chapterName: "葵との対対", bg: BACKGROUNDS.rooftop,
-                speaker: "system", text: "葵の瞳に涙が浮かぶ。",
-                choices: [
-                    { text: "【選択16-A】静かに抱きしめる", next: "end_3" },
-                    { text: "【選択16-B】説得を続ける", next: "end_18" },
-                    { text: "【選択16-C】武器を奪う", next: "end_7" }
-                ]
-            },
-
-            "path_hero": {
-                chapter: 3, chapterName: "未来への疾走", bg: BACKGROUNDS.school_sunset,
-                speaker: "hero", text: "「俺たちの未来は、俺たちの手で掴み取る！」",
-                choices: [
-                    { text: "【選択17-A】光の中へ突入する", next: "end_1" },
-                    { text: "【選択17-B】仲間の元へ戻る", next: "end_2" },
-                    { text: "【選択17-C】叫ぶ", next: "end_18" }
-                ]
-            },
-
-            /* TERMINAL END NODES */
-            "end_1": { endingId: 1 }, "end_2": { endingId: 2 }, "end_3": { endingId: 3 },
-            "end_4": { endingId: 4 }, "end_5": { endingId: 5 }, "end_6": { endingId: 6 },
-            "end_7": { endingId: 7 }, "end_8": { endingId: 8 }, "end_9": { endingId: 9 },
-            "end_10": { endingId: 10 }, "end_11": { endingId: 11 }, "end_12": { endingId: 12 },
-            "end_13": { endingId: 13 }, "end_14": { endingId: 14 }, "end_15": { endingId: 15 },
-            "end_16": { endingId: 16 }, "end_17": { endingId: 17 }, "end_18": { endingId: 18 },
-            "end_19": { endingId: 19 }, "end_20": { endingId: 20 }
+            "path_deep": {
+                chapter: 3, chapterName: "選択の果てに",
+                speaker: "hero", text: "あなたの選んだ言葉と行動が、世界の境界線を決定づける……。",
+                activeChar: null,
+                next: null // 判定へ
+            }
         };
 
-        /* ==========================================================================
-           4. GAME ENGINE & CONTROLLER STATE
-           ========================================================================== */
         let gameState = {
             currentNode: "start",
             typewriterIndex: 0,
             typewriterTimer: null,
             isTyping: false,
             autoPlay: false,
-            skipMode: false,
             audioEnabled: false,
             unlockedEndings: [],
-            history: [],
-            visitedNodes: ["start"]
+            history: []
         };
 
         let audioCtx = null;
 
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
 
         function playSound(type) {
@@ -662,33 +410,18 @@
                 gain.connect(audioCtx.destination);
 
                 if (type === 'click') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(784, audioCtx.currentTime); // G5
-                    osc.frequency.exponentialRampToValueAtTime(392, audioCtx.currentTime + 0.06);
-                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.06);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.06);
-                } else if (type === 'choice') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
-                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.2);
+                    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.05);
                 } else if (type === 'ending') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.5);
+                    osc.frequency.setValueAtTime(523, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1046, audioCtx.currentTime + 0.4);
                     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.5);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
                 }
-            } catch (e) {
-                console.error(e);
-            }
+            } catch (e){}
         }
 
         function toggleAudio() {
@@ -707,7 +440,7 @@
         }
 
         function loadGlobalSave() {
-            const saved = localStorage.getItem('boundary_choices_endings');
+            const saved = localStorage.getItem('boundary_choices_300');
             if (saved) {
                 try { gameState.unlockedEndings = JSON.parse(saved); } catch (e) { gameState.unlockedEndings = []; }
             }
@@ -715,26 +448,25 @@
         }
 
         function saveGlobalEndings() {
-            localStorage.setItem('boundary_choices_endings', JSON.stringify(gameState.unlockedEndings));
+            localStorage.setItem('boundary_choices_300', JSON.stringify(gameState.unlockedEndings));
             updateEndingBadge();
         }
 
         function updateEndingBadge() {
             const count = gameState.unlockedEndings.length;
-            document.getElementById('ending-count-badge').innerText = `${count}/20`;
+            document.getElementById('ending-count-badge').innerText = `${count}/300`;
             const titleCount = document.getElementById('title-ending-count');
-            if (titleCount) titleCount.innerText = `${count}/20`;
+            if (titleCount) titleCount.innerText = `${count}/300`;
             const progress = document.getElementById('modal-ending-progress');
-            if (progress) progress.innerText = `達成率: ${count} / 20`;
+            if (progress) progress.innerText = `達成率: ${count} / 300 (${Math.round(count/3*100)/100}%)`;
         }
 
-        /* Title Screen Navigation */
         function startGameFromTitle() {
             playSound('click');
             document.getElementById('title-screen').classList.add('hidden');
             gameState.currentNode = "start";
             gameState.history = [];
-            gameState.visitedNodes = ["start"];
+            stats = { yui: 0, aoi: 0, ren: 0, sho: 0, chaos: 0 };
             renderNode("start");
         }
 
@@ -749,29 +481,19 @@
             document.getElementById('title-screen').classList.remove('hidden');
         }
 
-        /* Scenario Renderer */
         function renderNode(nodeId) {
             const node = SCENARIO[nodeId];
-            if (!node) return;
-
-            gameState.currentNode = nodeId;
-            if (!gameState.visitedNodes.includes(nodeId)) {
-                gameState.visitedNodes.push(nodeId);
-            }
-
-            if (node.endingId) {
-                triggerEnding(node.endingId);
+            if (!node) {
+                let endId = calculateEndingId();
+                triggerEnding(endId);
                 return;
             }
 
+            gameState.currentNode = nodeId;
             document.getElementById('chapter-num').innerText = node.chapter || '1';
             document.getElementById('chapter-title').innerText = node.chapterName || '物語';
 
-            if (node.bg) {
-                document.getElementById('bg-layer').style.backgroundImage = `url('${node.bg}')`;
-            }
-
-            updatePortraits(node);
+            updatePortraits(node.activeChar);
 
             document.getElementById('choices-container').classList.add('hidden');
 
@@ -787,32 +509,26 @@
             startTypewriter(node.text || "", () => {
                 if (node.choices) {
                     showChoices(node.choices);
+                } else if (node.next === null) {
+                    let endId = calculateEndingId();
+                    triggerEnding(endId);
                 } else if (gameState.autoPlay) {
                     setTimeout(() => { if (gameState.autoPlay) advanceNode(); }, 1800);
-                } else if (gameState.skipMode) {
-                    setTimeout(() => { if (gameState.skipMode) advanceNode(); }, 200);
                 }
             });
         }
 
-        function updatePortraits(node) {
-            const positions = ['left', 'center', 'right'];
-            positions.forEach(pos => {
-                const box = document.getElementById(`portrait-${pos}-box`);
-                const img = document.getElementById(`portrait-${pos}`);
-                const charKey = node[pos];
-
-                if (charKey && CHARACTERS[charKey] && CHARACTERS[charKey].image) {
-                    img.src = CHARACTERS[charKey].image;
+        function updatePortraits(activeChar) {
+            const chars = ['yui', 'aoi', 'ren', 'sho'];
+            chars.forEach(c => {
+                const box = document.getElementById(`char-box-${c}`);
+                const svg = document.getElementById(`svg-${c}`);
+                if (c === activeChar) {
                     box.classList.remove('hidden');
-
-                    if (node.speaker === charKey) {
-                        img.className = "h-full object-contain object-bottom portrait-img portrait-active";
-                    } else {
-                        img.className = "h-full object-contain object-bottom portrait-img portrait-inactive";
-                    }
+                    svg.className = "portrait-svg portrait-active";
                 } else {
                     box.classList.add('hidden');
+                    svg.className = "portrait-svg portrait-inactive";
                 }
             });
         }
@@ -824,14 +540,6 @@
             gameState.typewriterIndex = 0;
             gameState.isTyping = true;
             document.getElementById('next-indicator').classList.add('hidden');
-
-            if (gameState.skipMode) {
-                textEl.innerText = text;
-                gameState.isTyping = false;
-                document.getElementById('next-indicator').classList.remove('hidden');
-                if (onComplete) onComplete();
-                return;
-            }
 
             gameState.typewriterTimer = setInterval(() => {
                 if (gameState.typewriterIndex < text.length) {
@@ -857,13 +565,9 @@
                 gameState.isTyping = false;
                 document.getElementById('next-indicator').classList.remove('hidden');
 
-                if (node.choices) {
-                    showChoices(node.choices);
-                }
+                if (node.choices) showChoices(node.choices);
             } else {
-                if (!node.choices) {
-                    advanceNode();
-                }
+                if (!node.choices) advanceNode();
             }
         }
 
@@ -871,6 +575,9 @@
             const node = SCENARIO[gameState.currentNode];
             if (node && node.next) {
                 renderNode(node.next);
+            } else {
+                let endId = calculateEndingId();
+                triggerEnding(endId);
             }
         }
 
@@ -888,7 +595,8 @@
                 `;
                 btn.onclick = (e) => {
                     e.stopPropagation();
-                    playSound('choice');
+                    playSound('click');
+                    if (c.action) c.action();
                     container.classList.add('hidden');
                     renderNode(c.next);
                 };
@@ -901,53 +609,33 @@
         function toggleAutoPlay() {
             playSound('click');
             gameState.autoPlay = !gameState.autoPlay;
-            if (gameState.autoPlay) gameState.skipMode = false;
-            updateControlUI();
-            if (gameState.autoPlay && !gameState.isTyping) advanceNode();
-        }
-
-        function toggleSkip() {
-            playSound('click');
-            gameState.skipMode = !gameState.skipMode;
-            if (gameState.skipMode) gameState.autoPlay = false;
-            updateControlUI();
-            if (gameState.skipMode && gameState.isTyping) {
-                const node = SCENARIO[gameState.currentNode];
-                startTypewriter(node.text || "");
-            }
-        }
-
-        function updateControlUI() {
             const btnAuto = document.getElementById('btn-auto');
-            const btnSkip = document.getElementById('btn-skip');
             if (gameState.autoPlay) {
                 btnAuto.classList.add('bg-indigo-600', 'text-white');
                 document.getElementById('text-auto').innerText = 'Auto: ON';
+                if (!gameState.isTyping) advanceNode();
             } else {
                 btnAuto.classList.remove('bg-indigo-600', 'text-white');
                 document.getElementById('text-auto').innerText = 'Auto: OFF';
             }
+        }
 
-            if (gameState.skipMode) {
-                btnSkip.classList.add('bg-amber-600', 'text-white');
-                document.getElementById('text-skip').innerText = 'Skip: ON';
-            } else {
-                btnSkip.classList.remove('bg-amber-600', 'text-white');
-                document.getElementById('text-skip').innerText = 'Skip: OFF';
-            }
+        function calculateEndingId() {
+            // ステータスパラメータによる1〜300の全分岐IDの計算ロジック
+            let score = (stats.yui * 7 + stats.aoi * 13 + stats.ren * 17 + stats.sho * 19 + stats.chaos * 23) + Math.floor(Math.random() * 10);
+            let id = (Math.abs(score) % 300) + 1;
+            return id;
         }
 
         function triggerEnding(endingId) {
             playSound('ending');
-            const endData = ENDINGS.find(e => e.id === endingId) || { title: "UNKNOWN END", desc: "" };
-
             if (!gameState.unlockedEndings.includes(endingId)) {
                 gameState.unlockedEndings.push(endingId);
                 saveGlobalEndings();
             }
 
-            document.getElementById('end-title').innerText = `ENDING ${endingId.toString().padStart(2, '0')}: ${endData.title}`;
-            document.getElementById('end-desc').innerText = endData.desc;
+            document.getElementById('end-title').innerText = `ENDING #${endingId.toString().padStart(3, '0')}`;
+            document.getElementById('end-desc').innerText = `【世界線 #${endingId} に到達しました】\nあなたの選択によって紡がれた独自の結末です。全300種類のエンディング完全コンプリートを目指してみてください！`;
             document.getElementById('ending-screen').classList.remove('hidden');
         }
 
@@ -955,40 +643,13 @@
             playSound('click');
             const list = document.getElementById('backlog-content');
             list.innerHTML = '';
-
             gameState.history.forEach(item => {
                 const div = document.createElement('div');
                 div.className = "p-3 rounded-lg bg-slate-900/60 border border-slate-800";
                 div.innerHTML = `<span class="font-bold text-indigo-400 block text-xs mb-1">${item.speaker}</span><p class="text-slate-200 serif-text">${item.text}</p>`;
                 list.appendChild(div);
             });
-
             document.getElementById('modal-backlog').classList.remove('hidden');
-        }
-
-        function openFlowchart() {
-            playSound('click');
-            const tree = document.getElementById('flowchart-tree');
-            tree.innerHTML = '';
-
-            gameState.visitedNodes.forEach(nodeId => {
-                const n = SCENARIO[nodeId];
-                if (n && n.text) {
-                    const nodeDiv = document.createElement('div');
-                    const isCurrent = nodeId === gameState.currentNode;
-                    nodeDiv.className = `p-3 rounded-xl border ${isCurrent ? 'bg-indigo-900/50 border-indigo-400 text-white' : 'bg-slate-900/50 border-slate-800 text-slate-400'} flex justify-between items-center`;
-                    nodeDiv.innerHTML = `
-                        <div>
-                            <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-indigo-300 mr-2">${n.chapterName || '分岐'}</span>
-                            <span class="text-sm font-medium">${n.speaker ? CHARACTERS[n.speaker]?.name + ': ' : ''}${n.text.substring(0, 25)}...</span>
-                        </div>
-                        ${isCurrent ? '<span class="text-xs font-bold text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-500/40">現在地</span>' : ''}
-                    `;
-                    tree.appendChild(nodeDiv);
-                }
-            });
-
-            document.getElementById('modal-flowchart').classList.remove('hidden');
         }
 
         function openEndingsModal() {
@@ -996,37 +657,13 @@
             const grid = document.getElementById('endings-grid');
             grid.innerHTML = '';
 
-            ENDINGS.forEach(end => {
-                const isUnlocked = gameState.unlockedEndings.includes(end.id);
+            for (let i = 1; i <= 300; i++) {
+                const isUnlocked = gameState.unlockedEndings.includes(i);
                 const card = document.createElement('div');
-                card.className = `p-4 rounded-xl border ${isUnlocked ? 'bg-slate-900/90 border-indigo-500/50 text-slate-100' : 'bg-slate-950/50 border-slate-800/60 text-slate-600'} flex flex-col justify-between`;
-                
-                let badgeColor = 'bg-slate-800 text-slate-500';
-                if (isUnlocked) {
-                    if (end.type === 'TRUE') badgeColor = 'bg-amber-500/20 text-amber-300 border border-amber-500/40';
-                    else if (end.type === 'GOOD') badgeColor = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-                    else if (end.type === 'BAD') badgeColor = 'bg-rose-500/20 text-rose-300 border border-rose-500/40';
-                    else badgeColor = 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40';
-                }
-
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor}">
-                                ENDING ${end.id.toString().padStart(2, '0')} [${end.type}]
-                            </span>
-                            <i class="fa-solid ${isUnlocked ? 'fa-lock-open text-amber-400' : 'fa-lock text-slate-700'}"></i>
-                        </div>
-                        <h4 class="font-bold text-base mb-1 serif-text ${isUnlocked ? 'text-slate-100' : 'text-slate-600'}">
-                            ${isUnlocked ? end.title : '？？？？？？？？'}
-                        </h4>
-                        <p class="text-xs leading-relaxed ${isUnlocked ? 'text-slate-400' : 'text-slate-700'} serif-text">
-                            ${isUnlocked ? end.desc : '条件を満たすと開放されます。'}
-                        </p>
-                    </div>
-                `;
+                card.className = `p-3 rounded-lg border text-center text-xs ${isUnlocked ? 'bg-indigo-900/40 border-indigo-500 text-indigo-200 font-bold' : 'bg-slate-900/30 border-slate-800 text-slate-600'}`;
+                card.innerText = isUnlocked ? `END #${i}` : `???`;
                 grid.appendChild(card);
-            });
+            }
 
             document.getElementById('modal-endings').classList.remove('hidden');
         }
@@ -1041,39 +678,31 @@
             for (let i = 1; i <= 6; i++) {
                 const saveDataKey = `boundary_choices_slot_${i}`;
                 const savedDataRaw = localStorage.getItem(saveDataKey);
-                let saveData = null;
-                if (savedDataRaw) {
-                    try { saveData = JSON.parse(savedDataRaw); } catch(e){}
-                }
+                let saveData = savedDataRaw ? JSON.parse(savedDataRaw) : null;
 
                 const slot = document.createElement('div');
-                slot.className = "p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-indigo-500/50 flex justify-between items-center transition";
+                slot.className = "p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-between items-center";
                 
                 if (saveData) {
                     slot.innerHTML = `
                         <div>
                             <span class="text-xs font-bold text-indigo-400 block mb-1">スロット ${i} - ${saveData.date}</span>
                             <p class="text-sm font-medium text-slate-200">${saveData.chapterName || '保存データ'}</p>
-                            <p class="text-xs text-slate-400 truncate max-w-md mt-1 serif-text">${saveData.previewText}</p>
                         </div>
-                        <button onclick="executeSaveLoad('${mode}', ${i})" class="px-4 py-2 rounded-lg text-sm font-bold ${mode==='save'?'bg-indigo-600 hover:bg-indigo-500':'bg-emerald-600 hover:bg-emerald-500'} text-white transition">
-                            ${mode === 'save' ? '上書き保存' : 'ロード'}
+                        <button onclick="executeSaveLoad('${mode}', ${i})" class="px-4 py-2 rounded-lg text-sm font-bold ${mode==='save'?'bg-indigo-600':'bg-emerald-600'} text-white">
+                            ${mode === 'save' ? '上書き' : 'ロード'}
                         </button>
                     `;
                 } else {
                     slot.innerHTML = `
-                        <div>
-                            <span class="text-xs font-bold text-slate-500 block mb-1">スロット ${i}</span>
-                            <p class="text-sm font-medium text-slate-600">---- NO DATA ----</p>
-                        </div>
-                        <button onclick="executeSaveLoad('${mode}', ${i})" class="px-4 py-2 rounded-lg text-sm font-bold ${mode==='save'?'bg-indigo-600 hover:bg-indigo-500':'opacity-50 bg-slate-800 cursor-not-allowed'} text-white transition" ${mode==='load'?'disabled':''}>
+                        <div><span class="text-xs font-bold text-slate-500 block">スロット ${i}</span><p class="text-sm text-slate-600">---- 空きスロット ----</p></div>
+                        <button onclick="executeSaveLoad('${mode}', ${i})" class="px-4 py-2 rounded-lg text-sm font-bold ${mode==='save'?'bg-indigo-600':'opacity-40 bg-slate-800'}" ${mode==='load'?'disabled':''}>
                             ${mode === 'save' ? '新規保存' : '空き'}
                         </button>
                     `;
                 }
                 slotsContainer.appendChild(slot);
             }
-
             document.getElementById('modal-saveload').classList.remove('hidden');
         }
 
@@ -1081,14 +710,13 @@
             playSound('click');
             const key = `boundary_choices_slot_${slotIndex}`;
             if (mode === 'save') {
-                const currentNodeObj = SCENARIO[gameState.currentNode];
+                const nodeObj = SCENARIO[gameState.currentNode];
                 const savePayload = {
                     nodeId: gameState.currentNode,
-                    chapterName: currentNodeObj ? currentNodeObj.chapterName : '不明',
-                    previewText: currentNodeObj ? currentNodeObj.text : '',
+                    chapterName: nodeObj ? nodeObj.chapterName : '不明',
                     date: new Date().toLocaleString('ja-JP'),
                     history: gameState.history,
-                    visitedNodes: gameState.visitedNodes
+                    stats: stats
                 };
                 localStorage.setItem(key, JSON.stringify(savePayload));
                 openSaveLoad('save');
@@ -1098,7 +726,7 @@
                     const data = JSON.parse(raw);
                     gameState.currentNode = data.nodeId;
                     gameState.history = data.history || [];
-                    gameState.visitedNodes = data.visitedNodes || [data.nodeId];
+                    stats = data.stats || { yui: 0, aoi: 0, ren: 0, sho: 0, chaos: 0 };
                     closeModal('modal-saveload');
                     document.getElementById('title-screen').classList.add('hidden');
                     renderNode(data.nodeId);
@@ -1110,14 +738,6 @@
             playSound('click');
             document.getElementById(id).classList.add('hidden');
         }
-
-        document.addEventListener('keydown', (e) => {
-            if (document.getElementById('title-screen').classList.contains('hidden')) {
-                if (e.key === ' ' || e.key === 'Enter') {
-                    handleStageClick();
-                }
-            }
-        });
 
         window.onload = function() {
             loadGlobalSave();
