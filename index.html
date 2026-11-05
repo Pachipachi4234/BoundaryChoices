@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>境界の選択肢 - Boundary Choices (300 END Text-Only Super Edition)</title>
+    <title>境界の選択肢 - Boundary Choices (Pure Novel Massive Scenario Edition)</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -92,7 +92,7 @@
             <h1 class="text-5xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-300 serif-text tracking-widest drop-shadow-2xl mb-4">
                 境界の選択肢
             </h1>
-            <p class="text-slate-400 text-xs md:text-lg mt-4 serif-text tracking-widest">— Boundary Choices (立ち絵なし・純ノベル軽量・全300END完全版) —</p>
+            <p class="text-slate-400 text-xs md:text-lg mt-4 serif-text tracking-widest">— Boundary Choices (純ノベル・シナリオ大量増量版) —</p>
         </div>
 
         <div class="relative z-10 w-full max-w-md flex flex-col space-y-4 mb-16">
@@ -163,7 +163,7 @@
             </div>
         </header>
 
-        <!-- STAGE CENTER SPACE (純ノベルのため立ち絵エリアは空白) -->
+        <!-- STAGE CENTER SPACE -->
         <div class="flex-1 w-full"></div>
 
         <!-- CHOICES OVERLAY SCREEN -->
@@ -322,6 +322,7 @@
 
         let audioCtx = null;
 
+        // 大量増量シナリオデータベース (ノード数大幅UP)
         const SCENARIO = {
             "start": {
                 chapter: 1, chapterName: "第一章 - 茜色の放課後と噂", bg: BACKGROUNDS.school_sunset,
@@ -366,27 +367,55 @@
             },
             "c1_sho_accept": {
                 chapter: 1, chapterName: "第一章 - ラーメンの約束", bg: BACKGROUNDS.school_sunset,
-                speaker: "sho", text: "「っしゃ！さすが俺の相棒、話が早い！\n特製トッピングでも何でもつけてやるよ。よし、善は急げだ、行こうぜ！」", next: "c2_start"
+                speaker: "sho", text: "「っしゃ！さすが俺の相棒、話が早い！\n特製トッピングでも何でもつけてやるよ。よし、善は急げだ、行こうぜ！」", next: "c1_sho_walk"
+            },
+            "c1_sho_walk": {
+                chapter: 1, chapterName: "第一章 - 旧校舎への道", bg: BACKGROUNDS.school_sunset,
+                speaker: "hero", text: "俺と翔は夕陽が落ちかかる校庭を横切り、敷地の奥にある旧校舎を目指して歩き出した。\n渡り廊下を進むにつれ、周囲の静けさが増していく。", next: "c1_sho_talk"
+            },
+            "c1_sho_talk": {
+                chapter: 1, chapterName: "第一章 - 気さくな昔話", bg: BACKGROUNDS.school_sunset,
+                speaker: "sho", text: "「そういえばさ、お前が転校してきた日覚えてる？\nめちゃくちゃ緊張した顔してたからさ、俺『こいつ絶対友達作り苦労するタイプだ』って思って声かけたんだよねー！」", next: "c1_sho_talk_2"
+            },
+            "c1_sho_talk_2": {
+                chapter: 1, chapterName: "第一章 - 気さくな昔話", bg: BACKGROUNDS.school_sunset,
+                speaker: "hero", text: "余計なお世話だ、と笑い返す。\nだが、翔のその気さくさに救われたのは事実だった。", next: "c2_start"
             },
             "c1_ren_contact": {
                 chapter: 1, chapterName: "第一章 - 規律と許可", bg: BACKGROUNDS.school_sunset,
-                speaker: "sho", text: "「えー、生徒会長の蓮に？ あいつ固いから絶対怒られるって……。\n……わかったよ。お前がそう言うなら、一応筋は通しとくか。」", next: "c1_ren_contact_2"
+                speaker: "sho", text: "「えー、生徒会長の蓮に？ あいつ固いから絶対怒られるって……。\n……わかったよ。お前がそう言うなら、一応筋は通しとくか。」", next: "c1_ren_office"
+            },
+            "c1_ren_office": {
+                chapter: 1, chapterName: "第一章 - 生徒会室", bg: BACKGROUNDS.corridor_day,
+                speaker: "hero", text: "俺たちは生徒会室の扉を叩いた。\n中から「入れ」という几帳面な声が響く。", next: "c1_ren_contact_2"
             },
             "c1_ren_contact_2": {
-                chapter: 1, chapterName: "第一章 - 生徒会長", bg: BACKGROUNDS.corridor_day,
-                speaker: "ren", text: "「……旧校舎の調査ですか。\n確かに、最近あの一帯で不可解な電磁波の乱れが観測されています。あなた方の無謀な行動は褒められませんが……同行しましょう。」", next: "c2_start"
+                chapter: 1, chapterName: "第一章 - 生徒会長の分析", bg: BACKGROUNDS.corridor_day,
+                speaker: "ren", text: "「……旧校舎の調査ですか。\nあそこは老朽化による立ち入り禁止区域です。本来なら即座に却下するところですが……」", next: "c1_ren_contact_3"
+            },
+            "c1_ren_contact_3": {
+                chapter: 1, chapterName: "第一章 - 生徒会長の分析", bg: BACKGROUNDS.corridor_day,
+                speaker: "ren", text: "「最近、校内の精密機器に原因不明の電磁波異常が観測されています。\n放置するわけにはいきません。生徒会として私自ら同行し、現場を確認しましょう。」", next: "c2_start"
             },
             "c1_aoi_lib": {
+                chapter: 1, chapterName: "第一章 - 図書室の陰影", bg: BACKGROUNDS.library,
+                speaker: "hero", text: "調査を提案した俺たちは、放課後の静まり返った図書室へと向かった。\n薄暗い書架の奥に、怪しげな古書をめくる人物の影があった。", next: "c1_aoi_lib_talk"
+            },
+            "c1_aoi_lib_talk": {
                 chapter: 1, chapterName: "第一章 - 図書室の魔女", bg: BACKGROUNDS.library,
-                speaker: "aoi", text: "「ふふ……旧校舎の噂？\nいいわよ、特別に10年前に隠蔽された『空間消失事件』の資料を見せてあげる。」", next: "c1_aoi_lib_2"
+                speaker: "aoi", text: "「ふふ……旧校舎の噂について調べているの？\nいいわよ、特別に10年前に隠蔽された『空間消失事件』の新聞記事を見せてあげる。」", next: "c1_aoi_lib_2"
             },
             "c1_aoi_lib_2": {
-                chapter: 1, chapterName: "第一章 - 図書室の魔女", bg: BACKGROUNDS.library,
-                speaker: "sho", text: "「うげっ、オカルトマニアの葵かよ……。\nまぁでも、情報があるなら助かるわ。ありがとな！」", next: "c2_start"
+                chapter: 1, chapterName: "第一章 - 封印された記録", bg: BACKGROUNDS.library,
+                speaker: "sho", text: "「うげっ、オカルトマニアの葵かよ……。\nまぁでも、情報があるなら助かるわ。10年前の事件って何があったんだ？」", next: "c1_aoi_lib_3"
+            },
+            "c1_aoi_lib_3": {
+                chapter: 1, chapterName: "第一章 - 封印された記録", bg: BACKGROUNDS.library,
+                speaker: "aoi", text: "「ある日突然、旧校舎の3階の教室から女子生徒が一人、煙のように消えたの。\n警察の捜査も打ち切られ、事件そのものが揉み消された……興味深いでしょう？」", next: "c2_start"
             },
             "c2_start": {
                 chapter: 2, chapterName: "第二章 - 閉ざされた扉", bg: BACKGROUNDS.corridor_dark,
-                speaker: "hero", text: "夕闇が濃くなる中、俺たちは旧校舎の入り口に到着した。\n立ち入り禁止の立て札があり、重厚な鉄扉には南京錠がかかっている。", next: "c2_2"
+                speaker: "hero", text: "夕闇が濃くなる中、俺たちは旧校舎の入り口に到着した。\n立ち入り禁止の立て札があり、重厚な鉄扉には大きな南京錠がかかっている。", next: "c2_2"
             },
             "c2_2": {
                 chapter: 2, chapterName: "第二章 - 閉ざされた扉", bg: BACKGROUNDS.corridor_dark,
@@ -394,7 +423,28 @@
             },
             "c2_3": {
                 chapter: 2, chapterName: "第二章 - 踏み入れる足", bg: BACKGROUNDS.corridor_dark,
-                speaker: "hero", text: "ギギギ……と耳障りな音を立てて鉄扉を開けると、ひんやりとした空気が肌を刺した。\n埃っぽい匂いの中に、かすかに……潮風のような不思議な匂いが混じっている。", next: "c2_4"
+                speaker: "hero", text: "ギギギ……と耳障りな音を立てて鉄扉を開けると、ひんやりとした空気が肌を刺した。\n埃っぽい匂いの中に、かすかに……潮風のような不思議な匂いが混じっている。", next: "c2_gate_choice"
+            },
+            "c2_gate_choice": {
+                chapter: 2, chapterName: "第二章 - 探索の順番", bg: BACKGROUNDS.corridor_dark,
+                speaker: "system", text: "薄暗い廊下が広がっている。どこから調べる？",
+                choices: [
+                    { text: "1階の職員室と資料室を詳しく調べる", next: "c2_1f_search", action: () => { stats.truth += 5; choiceHistory.push(201); } },
+                    { text: "一気に2階の教室エリアへ上がってみる", next: "c2_2f_search", action: () => { stats.sho += 5; choiceHistory.push(202); } },
+                    { text: "足元に落ちている不審な足跡を追う", next: "c2_track_search", action: () => { stats.trust += 5; choiceHistory.push(203); } }
+                ]
+            },
+            "c2_1f_search": {
+                chapter: 2, chapterName: "第二章 - 1階資料室の秘密", bg: BACKGROUNDS.corridor_dark,
+                speaker: "hero", text: "資料室の引き出しを漁ると、黄色く変色した『誠心学園・異性体観測記録』という手帳が見つかった。\nそこには『境界の扉はオルゴールの旋律で固定される』と記されていた。", next: "c2_4"
+            },
+            "c2_2f_search": {
+                chapter: 2, chapterName: "第二章 - 階段を上って", bg: BACKGROUNDS.corridor_dark,
+                speaker: "sho", text: "「うおっ、階段の階段板、今にも抜けそうだぞ……！慎重にな！」\n階段を登りきると、廊下の温度が急速に下がり始めた。", next: "c2_4"
+            },
+            "c2_track_search": {
+                chapter: 2, chapterName: "第二章 - 不気味な足跡", bg: BACKGROUNDS.corridor_dark,
+                speaker: "hero", text: "床に残された足跡は、途中で壁に向かって消えていた。\nまるで壁の中に吸い込まれたかのような、異常な痕跡だ。", next: "c2_4"
             },
             "c2_4": {
                 chapter: 2, chapterName: "第二章 - 異常事態", bg: BACKGROUNDS.corridor_dark,
